@@ -29,7 +29,7 @@
         reset: helper.reset,
         next: helper.test,
         current: 0,
-        timerId: null
+        interval: null
       }
     },
     components: {
@@ -48,12 +48,15 @@
       },
       run() {
         const vm = this;
-        this.timerId = setInterval( function() {
+        this.interval = setInterval( function() {
           vm.swap();
         }, 800);
       },
       stop() {
-        clearInterval( this.timerId );
+        if ( this.interval ) {
+          clearInterval( this.interval );
+          this.interval = null;
+        }
       }
     },
     created() {
