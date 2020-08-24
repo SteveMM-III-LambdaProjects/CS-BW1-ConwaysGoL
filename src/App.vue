@@ -2,11 +2,13 @@
   <main>
     <h1>{{ name }}</h1>
     <about></about>
+    <grid></grid>
   </main>
 </template>
 
 <script>
   import About from './components/About'
+  import Grid  from './components/Grid'
   export default {
     data: function() {
       return {
@@ -14,7 +16,8 @@
       }
     },
     components: {
-      'about': About
+      'about': About,
+      'grid': Grid
     },
     computed: {
 
