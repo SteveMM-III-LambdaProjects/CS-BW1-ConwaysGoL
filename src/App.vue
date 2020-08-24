@@ -1,8 +1,8 @@
 <template>
   <main>
     <h1>{{ name }}</h1>
-    <about></about>
-    <grid></grid>
+    <About></About>
+    <Grid></Grid>
   </main>
 </template>
 
@@ -16,8 +16,8 @@
       }
     },
     components: {
-      'about': About,
-      'grid': Grid
+      About,
+      Grid
     },
     computed: {
 

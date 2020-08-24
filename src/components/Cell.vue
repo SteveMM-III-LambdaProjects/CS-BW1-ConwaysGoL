@@ -56,6 +56,6 @@
     background-color: rgba(44, 0, 0, 0.288);
   }
   .alive {
-    background-color: rgb(114, 0, 0);
+    background-color: rgb(0, 255, 0);
   }
 </style>

@@ -1,9 +1,6 @@
 <template>
   <div class="grid" ref="grid">
-    <span>
-      <button @click="run">Start</button>
-      <button @click="stop">Stop</button>
-    </span>
+    <Controls></Controls>
     <div class="row" v-for="y in rows" :key="y">
         <Cell
           v-for="cell in cells[y-1]"
@@ -18,22 +15,25 @@
 </template>
 
 <script>
-  import Cell from "./Cell"
-  import * as helper from '../Helpers/cells'
+  import Cell from './Cell';
+  import Controls from './Controls';
+  import { eventBus } from '../helpers/EventBus';
+  import * as helpers from '../helpers/cells';
   export default {
     data: function() {
       return {
         name: "Grid",
-        rows: helper.rows,
-        cells: helper.reset,
-        reset: helper.reset,
-        next: helper.test,
+        rows: helpers.rows,
+        cells: helpers.reset,
+        reset: helpers.reset,
+        next: helpers.test,
         current: 0,
         interval: null
       }
     },
     components: {
-      Cell
+      Cell,
+      Controls
     },
     computed: {
 
@@ -46,7 +46,7 @@
         if( this.current == 0 ) { this.cells = this.next; this.current = 1; }
         else { this.cells = this.reset; this.current = 0; }  
       },
-      run() {
+      start() {
         const vm = this;
         this.interval = setInterval( function() {
           vm.swap();
@@ -60,7 +60,12 @@
       }
     },
     created() {
-      // this.run();
+      eventBus.$on( 'startEvent', () => {
+        this.start();
+      } );
+      eventBus.$on( 'stopEvent', () => {
+        this.stop();
+      } );
     },
     beforeDestroy() {
       this.stop();
@@ -79,9 +84,6 @@
     border: 1px solid rgba(24, 24, 24, 0.123);
     margin: 0 auto;
     box-shadow: 0px 0px 120px 50px rgba(83, 1, 1, 0.486);
-  }
-  .grid span {
-    text-align: center;
   }
   .row {
     display: flex;

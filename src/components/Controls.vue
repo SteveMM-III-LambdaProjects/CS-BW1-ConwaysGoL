@@ -1,10 +1,14 @@
 <template>
-  <section>
-    
-  </section>
+  <div class="container">
+    <span>
+      <button @click="start">Start</button>
+      <button @click="stop">Stop</button>
+    </span>
+  </div>
 </template>
 
 <script>
+  import { eventBus } from '../helpers/EventBus';
   export default {
     data: function() {
       return {
@@ -21,9 +25,20 @@
 
     },
     methods: {
-
+      start() {
+        eventBus.$emit( 'startEvent' );
+      },
+      stop() {
+        eventBus.$emit( 'stopEvent' );
+      }
     }
   };
 </script>
 
-<style></style>
+<style scoped>
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+</style>
