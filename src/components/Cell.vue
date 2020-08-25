@@ -1,12 +1,12 @@
 <template>
-  <div class="cell" @click.stop="alive = !alive" :class="{alive: alive}"></div>
+  <div class="cell" @click="toggleLiving" :class="{alive: alive}"></div>
 </template>
 
 <script>
+  import { eventBus } from '../helpers/EventBus';
   export default {
     data: function() {
       return {
-        name: "Cell",
         alive: false,
         x: null,
         y: null
@@ -44,15 +44,15 @@
       }
     },
     methods: {
-      
+      toggleLiving() {
+        eventBus.$emit( 'cellEvent', this.x, this.y );
+      }
     }
   };
 </script>
 
 <style>
   .cell {
-    width: 10px;
-    height: 10px;
     background-color: rgba(44, 0, 0, 0.288);
   }
   .alive {

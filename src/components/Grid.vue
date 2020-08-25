@@ -1,16 +1,20 @@
 <template>
-  <div class="grid" ref="grid">
+  <div>
     <Controls></Controls>
-    <div class="row" v-for="y in rows" :key="y">
-        <Cell
-          v-for="cell in cells[y-1]"
-          :is="cell.type"
-          :col="cell.x"
-          :row="cell.y"
-          :living="cell.alive"
-          :key="cell.key">
-        </cell>
+    <div class="grid" ref="grid" :style="gridStyle">
+      <div class="row" v-for="y in rows" :key="y">
+          <Cell
+            v-for="cell in cells[y-1]"
+            :is="cell.type"
+            :col="cell.x"
+            :row="cell.y"
+            :living="cell.alive"
+            :key="cell.key"
+            :style="cellStyle">
+          </cell>
+      </div>
     </div>
+    <p style="text-align: center">Generation: {{ generation }}</p>
   </div>
 </template>
 
@@ -23,11 +27,13 @@
     data: function() {
       return {
         name: "Grid",
+        width: helpers.grid_width,
+        height: helpers.grid_height,
+        cell_dims: helpers.cell_size,
         rows: helpers.rows,
-        cells: helpers.reset,
-        reset: helpers.reset,
-        next: helpers.test,
-        current: 0,
+        generation: 0,
+        cells: helpers.reset(),
+        next: null,
         interval: null
       }
     },
@@ -36,21 +42,36 @@
       Controls
     },
     computed: {
-
+      gridStyle() {
+        return {
+          width: this.width+'px',
+          height: this.height+'px'
+        }
+      },
+      cellStyle() {
+        return {
+          width: this.cell_dims+'px',
+          height: this.cell_dims+'px',
+          border: '0.5px solid black'
+        }
+      }
     },
     watch: {
 
     },
     methods: {
       swap() {
-        if( this.current == 0 ) { this.cells = this.next; this.current = 1; }
-        else { this.cells = this.reset; this.current = 0; }  
+        this.cells = this.next
+        this.next = helpers.next( this.cells );
+        this.generation++;
       },
       start() {
+        this.next = helpers.next( this.cells );
         const vm = this;
         this.interval = setInterval( function() {
           vm.swap();
-        }, 800);
+        }, 50);
+        this.generation++;
       },
       stop() {
         if ( this.interval ) {
@@ -66,6 +87,19 @@
       eventBus.$on( 'stopEvent', () => {
         this.stop();
       } );
+      eventBus.$on( 'resetEvent', () => {
+        this.stop();
+        this.cells = helpers.reset();
+        this.generation = 0;
+      } );
+      eventBus.$on( 'randomizeEvent', () => {
+        this.stop();
+        this.cells = helpers.random();
+        this.generation = 0;
+      } );
+      eventBus.$on( 'cellEvent', ( x, y ) => {
+        this.cells = helpers.updateCells( x, y, this.cells );
+      } );
     },
     beforeDestroy() {
       this.stop();
@@ -75,8 +109,6 @@
 
 <style>
   .grid {
-    width: 600px;
-    height: 400px;
     background-color: rgba(134, 134, 134, 0.185);
     display: flex;
     flex-direction: column;

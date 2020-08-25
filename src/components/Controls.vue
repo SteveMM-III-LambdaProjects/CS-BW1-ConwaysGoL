@@ -3,6 +3,8 @@
     <span>
       <button @click="start">Start</button>
       <button @click="stop">Stop</button>
+      <button @click="reset">Reset</button>
+      <button @click="random">Random</button>
     </span>
   </div>
 </template>
@@ -30,6 +32,12 @@
       },
       stop() {
         eventBus.$emit( 'stopEvent' );
+      },
+      reset() {
+        eventBus.$emit( 'resetEvent' );
+      },
+      random() {
+        eventBus.$emit( 'randomizeEvent' );
       }
     }
   };
