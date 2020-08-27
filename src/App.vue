@@ -10,9 +10,10 @@
 </template>
 
 <script>
-  import About from './components/About';
+  import About    from './components/About';
   import Examples from './components/Examples';
-  import Grid  from './components/Grid';
+  import Grid     from './components/Grid';
+  
   export default {
     data: function() {
       return {
@@ -23,15 +24,6 @@
       About,
       Grid,
       Examples
-    },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    methods: {
-
     }
   };
 </script>

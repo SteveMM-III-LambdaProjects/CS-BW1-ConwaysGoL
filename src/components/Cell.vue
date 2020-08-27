@@ -4,6 +4,7 @@
 
 <script>
   import { eventBus } from '../helpers/EventBus';
+  
   export default {
     data: function() {
       return {
@@ -16,12 +17,6 @@
       col: { type: Number },
       row: { type: Number },
       living: { type: Boolean }
-    },
-    components: {
-
-    },
-    computed: {
-
     },
     watch: {
       col: {

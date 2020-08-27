@@ -11,21 +11,8 @@
 
 <script>
   import { eventBus } from '../helpers/EventBus';
+
   export default {
-    data: function() {
-      return {
-        name: "Controls"
-      }
-    },
-    components: {
-
-    },
-    computed: {
-
-    },
-    watch: {
-
-    },
     methods: {
       start() {
         eventBus.$emit( 'startEvent' );

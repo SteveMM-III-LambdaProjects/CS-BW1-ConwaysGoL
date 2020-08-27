@@ -20,10 +20,11 @@
 </template>
 
 <script>
-  import Cell from './Cell';
-  import Controls from './Controls';
+  import Cell         from './Cell';
+  import Controls     from './Controls';
   import { eventBus } from '../helpers/EventBus';
   import * as helpers from '../helpers/cells';
+
   export default {
     data: function() {
       return {
@@ -59,15 +60,7 @@
         }
       }
     },
-    watch: {
-
-    },
     methods: {
-      swap() {
-        this.cells = this.next
-        this.next = helpers.next( this.cells );
-        this.generation++;
-      },
       start() {
         this.running = true;
         this.generation++;
@@ -84,6 +77,11 @@
           clearInterval( this.intervalID );
           this.intervalID = null;
         }
+      },
+      swap() {
+        this.cells = this.next
+        this.next = helpers.next( this.cells );
+        this.generation++;
       }
     },
     created() {
