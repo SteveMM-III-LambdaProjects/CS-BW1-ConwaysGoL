@@ -2,7 +2,7 @@
   <section>
     <h2 @click="toggleDisplay">Examples</h2>
     <div class="container" :class="{none: hide}">
-      <p>click to activate</p>
+      <p>( click an example to activate it on the grid )</p>
       <div class="row">
         <div class="example" @click="blinker">
           <label>Blinker</label>
@@ -27,7 +27,7 @@
 
 <script>
   import { eventBus } from '../helpers/EventBus';
-  
+
   export default {
     data: function() {
       return {

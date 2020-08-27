@@ -89,21 +89,17 @@
         this.start();
       } );
       eventBus.$on( 'stopEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
       } );
       eventBus.$on( 'resetEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.reset();
         this.generation = 0;
       } );
       eventBus.$on( 'randomizeEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.random();
         this.generation = 0;
         this.start();
@@ -117,33 +113,29 @@
         }
       } );
       eventBus.$on( 'blinkerEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createBlinker();
         this.generation = 0;
         this.start();
       } );
       eventBus.$on( 'beaconEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createBeacon();
         this.generation = 0;
         this.start();
       } );
       eventBus.$on( 'pulsarEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createPulsar();
         this.generation = 0;
         this.start();
       } );
       eventBus.$on( 'gosperEvent', () => {
-        if ( this.running ) {
-          this.stop();
-        }
+        if ( this.running ) { this.stop(); }
+        if ( this.rate != 400 ) { this.rate = 200; }
         this.cells = helpers.creatGosperGun();
         this.generation = 0;
         this.start();
