@@ -1,14 +1,18 @@
 <template>
   <main>
     <h1>{{ name }}</h1>
-    <About></About>
+    <div class="wrapper">
+      <About class='sideA'></About>
+      <Examples class='sideB'></Examples>
+    </div>
     <Grid></Grid>
   </main>
 </template>
 
 <script>
-  import About from './components/About'
-  import Grid  from './components/Grid'
+  import About from './components/About';
+  import Examples from './components/Examples';
+  import Grid  from './components/Grid';
   export default {
     data: function() {
       return {
@@ -17,7 +21,8 @@
     },
     components: {
       About,
-      Grid
+      Grid,
+      Examples
     },
     computed: {
 
@@ -44,8 +49,22 @@
     color: white;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  }
+  .wrapper {
+    padding: 1%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .sideA, .sideB {
+    width: 49%;
+  }
+  .sideA h2, .sideB h2 {
+    text-decoration: underline;
+  }
+  .sideA h2:hover, .sideB h2:hover {
+    cursor: pointer;
+  }
+  section h2, h1 {
+    text-align: center;
   }
 </style>

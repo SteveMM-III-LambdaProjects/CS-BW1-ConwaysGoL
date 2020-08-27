@@ -5,7 +5,7 @@ export const grid_width = 600;
 
 export const grid_height = 400;
 
-export const resolution = 12;
+export const resolution = 13;
 
 export const cell_size = resolution - 2;
 
@@ -99,3 +99,95 @@ export const next = prev => {
   }
   return next;
 };
+
+export const createBlinker = () => {
+  const cells = reset();
+
+  cells[14][23].alive = true;
+  cells[15][23].alive = true;
+  cells[16][23].alive = true;
+
+  return cells;
+};
+
+export const createBeacon = () => {
+  const cells = reset();
+
+  cells[13][22].alive = true;
+  cells[13][23].alive = true;
+  cells[14][22].alive = true;
+  cells[14][23].alive = true;
+  cells[15][24].alive = true;
+  cells[15][25].alive = true;
+  cells[16][24].alive = true;
+  cells[16][25].alive = true;
+  
+  return cells;
+}
+
+export const createPulsar = () => {
+  const cells = reset();
+
+  for ( let y = 9; y < 22; y++ ) {
+    for ( let x = 17; x < 30; x++ ) {
+
+      if ( ( y == 9 || y == 14  || y == 16 || y == 21 ) &&
+         ( ( x > 18 && x < 22 ) || ( x > 24 && x < 28 ) ) ) {
+            cells[y][x].alive = true;
+      }
+
+      if ( ( ( y > 10 && y < 14) || ( y > 16 && y < 20) ) &&
+         ( x == 17 || x == 22 || x == 24 || x == 29 ) ) {
+            cells[y][x].alive = true;
+      }
+    }
+  }
+  
+  return cells;
+}
+
+export const creatGosperGun = () => {
+  const cells = reset();
+
+  cells[1][25].alive = true;
+  cells[2][23].alive = true;
+  cells[2][25].alive = true;
+
+  let y = 3;
+  for ( let x = 13; x < 37; x++ ) {
+    if ( x == 13 || x == 14 || x == 21 || x == 22 || x == 35 || x == 36 ) {
+      cells[y][x].alive = true;
+    }
+  }
+
+  y = 4;
+  for ( let x = 12; x < 37; x++ ) {
+    if ( x == 12 || x == 16 || x == 21 || x == 22 || x == 35 || x == 36 ) {
+      cells[y][x].alive = true;
+    }
+  }
+
+  y = 5;
+  for ( let x = 1; x < 23; x++ ) {
+    if ( x == 1 || x == 2 || x == 11 || x == 17 || x == 21 || x == 22 ) {
+      cells[y][x].alive = true;
+    }
+  }
+
+  y = 6;
+  for ( let x = 1; x < 26; x++ ) {
+    if ( x == 1 || x == 2 || x == 11 || x == 15 || x == 17 || x == 18 || x == 23 || x == 25 ) {
+      cells[y][x].alive = true;
+    }
+  }
+
+  cells[7][11].alive = true;
+  cells[7][17].alive = true;
+  cells[7][25].alive = true;
+  cells[8][12].alive = true;
+  cells[8][16].alive = true;
+  cells[9][13].alive = true;
+  cells[9][14].alive = true;
+
+  return cells;
+}

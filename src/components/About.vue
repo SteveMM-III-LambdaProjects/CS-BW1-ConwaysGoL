@@ -1,7 +1,7 @@
 <template>
   <section>
-    <h2>{{ name }}</h2>
-    <div class="modal-container">
+    <h2 @click="toggleDisplay">{{ name }}</h2>
+    <div class="container" :class="{none: hide}">
       <p>
         In 1968 John Conway began doing experiments with different 
         two-dimensional cellular automaton rules with the goal of 
@@ -36,6 +36,7 @@
     data: function() {
       return {
         name: "About",
+        hide: true,
         criteria: [
           "There should be no explosive growth.",
           "There should exist small initial patterns with chaotic, unpredictable outcomes.",
@@ -60,9 +61,15 @@
 
     },
     methods: {
-
+      toggleDisplay() {
+        this.hide = !this.hide;
+      }
     }
   };
 </script>
 
-<style></style>
+<style scoped>
+  .none {
+    display: none;
+  }
+</style>

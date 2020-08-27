@@ -53,7 +53,7 @@
 
 <style>
   .cell {
-    background-color: rgba(44, 0, 0, 0.288);
+    background-color: rgba(66, 1, 1, 0.288);
   }
   .alive {
     background-color: rgb(0, 255, 0);

@@ -4,7 +4,7 @@
     <div class="grid" ref="grid" :style="gridStyle">
       <div class="row" v-for="y in rows" :key="y">
           <Cell
-            v-for="cell in cells[y-1]"
+            v-for="cell in cells[ y - 1 ]"
             :is="cell.type"
             :col="cell.x"
             :row="cell.y"
@@ -15,6 +15,7 @@
       </div>
     </div>
     <p style="text-align: center">Generation: {{ generation }}</p>
+    <p style="text-align: center">( While stopped, clicking cells will toggle living state )</p>
   </div>
 </template>
 
@@ -34,7 +35,9 @@
         generation: 0,
         cells: helpers.reset(),
         next: null,
-        interval: null
+        rate: 400,
+        intervalID: null,
+        running: false
       }
     },
     components: {
@@ -66,17 +69,20 @@
         this.generation++;
       },
       start() {
+        this.running = true;
+        this.generation++;
         this.next = helpers.next( this.cells );
         const vm = this;
-        this.interval = setInterval( function() {
+        this.intervalID = setInterval( function() {
           vm.swap();
-        }, 50);
-        this.generation++;
+        }, vm.rate );
+        this.running = true;
       },
       stop() {
-        if ( this.interval ) {
-          clearInterval( this.interval );
-          this.interval = null;
+        this.running = false;
+        if ( this.intervalID ) {
+          clearInterval( this.intervalID );
+          this.intervalID = null;
         }
       }
     },
@@ -85,20 +91,64 @@
         this.start();
       } );
       eventBus.$on( 'stopEvent', () => {
-        this.stop();
+        if ( this.running ) {
+          this.stop();
+        }
       } );
       eventBus.$on( 'resetEvent', () => {
-        this.stop();
+        if ( this.running ) {
+          this.stop();
+        }
         this.cells = helpers.reset();
         this.generation = 0;
       } );
       eventBus.$on( 'randomizeEvent', () => {
-        this.stop();
+        if ( this.running ) {
+          this.stop();
+        }
         this.cells = helpers.random();
         this.generation = 0;
+        this.start();
       } );
       eventBus.$on( 'cellEvent', ( x, y ) => {
-        this.cells = helpers.updateCells( x, y, this.cells );
+        if ( !this.running ) {
+          this.cells = helpers.updateCells( x, y, this.cells );
+          if ( this.generation == 0 ) {
+            this.generation = 1;
+          }
+        }
+      } );
+      eventBus.$on( 'blinkerEvent', () => {
+        if ( this.running ) {
+          this.stop();
+        }
+        this.cells = helpers.createBlinker();
+        this.generation = 0;
+        this.start();
+      } );
+      eventBus.$on( 'beaconEvent', () => {
+        if ( this.running ) {
+          this.stop();
+        }
+        this.cells = helpers.createBeacon();
+        this.generation = 0;
+        this.start();
+      } );
+      eventBus.$on( 'pulsarEvent', () => {
+        if ( this.running ) {
+          this.stop();
+        }
+        this.cells = helpers.createPulsar();
+        this.generation = 0;
+        this.start();
+      } );
+      eventBus.$on( 'gosperEvent', () => {
+        if ( this.running ) {
+          this.stop();
+        }
+        this.cells = helpers.creatGosperGun();
+        this.generation = 0;
+        this.start();
       } );
     },
     beforeDestroy() {
@@ -113,9 +163,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    border: 1px solid rgba(24, 24, 24, 0.123);
+    border: 0.1px solid rgba(82, 82, 82, 0.178);
     margin: 0 auto;
-    box-shadow: 0px 0px 120px 50px rgba(83, 1, 1, 0.486);
+    margin-top: 5px;
+    box-shadow: 0px 0px 120px 40px rgba(131, 1, 1, 0.445);
   }
   .row {
     display: flex;
