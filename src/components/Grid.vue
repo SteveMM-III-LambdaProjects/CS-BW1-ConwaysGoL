@@ -38,7 +38,8 @@
         next: null,
         rate: 400,
         intervalID: null,
-        running: false
+        running: false,
+        boardClear: true
       }
     },
     components: {
@@ -64,12 +65,18 @@
       start() {
         this.running = true;
         this.generation++;
-        this.next = helpers.next( this.cells );
+        this.setNext();
         const vm = this;
         this.intervalID = setInterval( function() {
           vm.swap();
         }, vm.rate );
-        this.running = true;
+      },
+      step() {
+        if ( this.boardClear ) { return true; }
+        else {
+          this.setNext()
+          this.swap();
+        }
       },
       stop() {
         this.running = false;
@@ -80,13 +87,19 @@
       },
       swap() {
         this.cells = this.next
-        this.next = helpers.next( this.cells );
+        this.setNext();
         this.generation++;
+      },
+      setNext() {
+        this.next = helpers.next( this.cells );
       }
     },
     created() {
       eventBus.$on( 'startEvent', () => {
         this.start();
+      } );
+      eventBus.$on( 'stepEvent', () => {
+        this.step();
       } );
       eventBus.$on( 'stopEvent', () => {
         if ( this.running ) { this.stop(); }
@@ -96,13 +109,14 @@
         if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.reset();
         this.generation = 0;
+        this.boardClear = true;
       } );
       eventBus.$on( 'randomizeEvent', () => {
         if ( this.running ) { this.stop(); }
         if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.random();
         this.generation = 0;
-        this.start();
+        if ( this.boardClear ) { this.boardClear = false; }
       } );
       eventBus.$on( 'cellEvent', ( x, y ) => {
         if ( !this.running ) {
@@ -110,6 +124,7 @@
           if ( this.generation == 0 ) {
             this.generation = 1;
           }
+          if ( this.boardClear ) { this.boardClear = false; }
         }
       } );
       eventBus.$on( 'blinkerEvent', () => {
@@ -117,28 +132,28 @@
         if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createBlinker();
         this.generation = 0;
-        this.start();
+        if ( this.boardClear ) { this.boardClear = false; }
       } );
       eventBus.$on( 'beaconEvent', () => {
         if ( this.running ) { this.stop(); }
         if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createBeacon();
         this.generation = 0;
-        this.start();
+        if ( this.boardClear ) { this.boardClear = false; }
       } );
       eventBus.$on( 'pulsarEvent', () => {
         if ( this.running ) { this.stop(); }
         if ( this.rate != 400 ) { this.rate = 400; }
         this.cells = helpers.createPulsar();
         this.generation = 0;
-        this.start();
+        if ( this.boardClear ) { this.boardClear = false; }
       } );
       eventBus.$on( 'gosperEvent', () => {
         if ( this.running ) { this.stop(); }
         if ( this.rate != 400 ) { this.rate = 200; }
         this.cells = helpers.creatGosperGun();
         this.generation = 0;
-        this.start();
+        if ( this.boardClear ) { this.boardClear = false; }
       } );
     },
     beforeDestroy() {

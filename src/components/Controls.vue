@@ -2,6 +2,7 @@
   <div class="container">
     <span>
       <button @click="start">Start</button>
+      <button @click="step">Step</button>
       <button @click="stop">Stop</button>
       <button @click="reset">Reset</button>
       <button @click="random">Random</button>
@@ -16,6 +17,9 @@
     methods: {
       start() {
         eventBus.$emit( 'startEvent' );
+      },
+      step() {
+        eventBus.$emit( 'stepEvent' );
       },
       stop() {
         eventBus.$emit( 'stopEvent' );
